@@ -8,6 +8,7 @@ from datetime import datetime
 from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.filters import CommandStart
+from aiogram.client.default import DefaultBotProperties  # 👈 НОВЫЙ ИМПОРТ
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
@@ -32,7 +33,11 @@ TZ = pytz.timezone("Europe/Madrid")
 
 DB_PATH = "crypto_bot.db"
 
-bot = Bot(token=API_TOKEN, parse_mode="Markdown")
+# 👇 ВАЖНО: вот тут мы исправили parse_mode под новую версию aiogram
+bot = Bot(
+    token=API_TOKEN,
+    default=DefaultBotProperties(parse_mode="Markdown"),
+)
 dp = Dispatcher()
 
 scheduler = AsyncIOScheduler(timezone=TZ)
